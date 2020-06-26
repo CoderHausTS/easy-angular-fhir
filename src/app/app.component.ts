@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppConfigService } from './services/app-config.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'easy-angular-fhir';
+  title = AppConfigService.settings.env.title;
 }

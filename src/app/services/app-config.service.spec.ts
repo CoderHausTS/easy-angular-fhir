@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ConnectService } from './connect.service';
+import { AppConfigService } from './app-config.service';
 
-describe('ConnectService', () => {
+describe('AppConfigService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ConnectService = TestBed.get(ConnectService);
+    const service: AppConfigService = TestBed.get(AppConfigService);
     expect(service).toBeTruthy();
   });
 });
