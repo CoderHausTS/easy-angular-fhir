@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
-import { AppConfigService } from './app-config.service';
 import { AppConfig } from '../models/app-config';
 import { HttpClient } from '@angular/common/http';
+import { AppConfigService } from './app-config.service';
 
 // makes the requests for data to fhir enpoints, minus token, auth
 @Injectable({
   providedIn: 'root',
 })
 export class FhirRequestService {
-  conformanceStatement;
 
-  constructor(private config: AppConfig, private http: HttpClient) {}
+  constructor(private config: AppConfigService, private http: HttpClient) {
+    console.log('constructor');
+    console.log('config ', AppConfigService.settings);
+  }
 
   // hit the conformance statement
   // conformanceStatementURL = baseUrl + 'metadata'
   // https://open-ic.epic.com/Argonaut/api/FHIR/Argonaut/metadata
   getConformanceStatement() {
-    this.conformanceStatement = this.http.get(
-      this.config.fhir.baseURL + 'metadata'
+    return this.http.get(
+      AppConfigService.settings.fhir.baseURL + 'metadata'
     );
-    console.log('conformance statement ', this.conformanceStatement);
   }
 }
 
