@@ -1,2 +1,9 @@
-<p>conformance works!</p>
-<p>{{ this.conformanceStatement | json }}</p>
+<h3>Software section</h3>
+<pre>{{ this.conformanceStatement?.data.software | json }}</pre>
+
+<h3>Security section</h3>
+<pre>{{ this.conformanceStatement?.data.rest[0].security | json }}</pre>
+
+<h3>Resource section</h3>
+<pre>{{ this.conformanceStatement?.data.rest[0].resource | json }}</pre>
+

@@ -4,23 +4,26 @@ import { FhirRequestService } from '../services/fhir-request.service';
 @Component({
   selector: 'app-conformance',
   templateUrl: './conformance.component.html',
-  styleUrls: ['./conformance.component.css']
+  styleUrls: ['./conformance.component.css'],
 })
 export class ConformanceComponent implements OnInit {
-
   conformanceStatement;
 
-  constructor(private fhirReq: FhirRequestService) { }
+  constructor(private fhirReq: FhirRequestService) {}
 
   ngOnInit() {
-    this.conformanceStatement = this.fhirReq.getConformanceStatement();
+    this.showConformanceStatement();
+
+    setTimeout(() => {
+      console.log(this.conformanceStatement);
+    }, 3000);
   }
 
   showConformanceStatement() {
-      this.fhirReq.getConformanceStatement().subscribe(
-        (data) =>
-          (this.conformanceStatement = { ...data })
-      );
+    this.fhirReq.getConformanceStatement()
+    .subscribe(
+      (data) =>
+        (this.conformanceStatement = { data })
+    );
   }
-
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppConfig } from '../models/app-config';
 import { HttpClient } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
+import { Observable } from 'rxjs';
 
 // makes the requests for data to fhir enpoints, minus token, auth
 @Injectable({
@@ -18,7 +19,7 @@ export class FhirRequestService {
   // conformanceStatementURL = baseUrl + 'metadata'
   // https://open-ic.epic.com/Argonaut/api/FHIR/Argonaut/metadata
   getConformanceStatement() {
-    return this.http.get(
+   return this.http.get(
       AppConfigService.settings.fhir.baseURL + 'metadata'
     );
   }
