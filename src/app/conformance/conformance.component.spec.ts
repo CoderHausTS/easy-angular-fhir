@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConformanceComponent } from './conformance.component';
+import { HttpClient } from '@angular/common/http';
 
 describe('ConformanceComponent', () => {
   let component: ConformanceComponent;
@@ -8,7 +9,8 @@ describe('ConformanceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConformanceComponent ]
+      declarations: [ ConformanceComponent ],
+      providers: [HttpClient]
     })
     .compileComponents();
   }));
