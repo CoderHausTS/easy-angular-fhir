@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 
 import { ConformanceParserService } from './conformance-parser.service';
 import { of } from 'rxjs';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FhirRequestService } from './fhir-request.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ConformanceParserService', () => {
-  let service: ConformanceParserService;
-
   const mockBaseURL = 'https://mock.mock.mock/';
   const mockConformanceData = {
     data: {
@@ -863,29 +862,103 @@ describe('ConformanceParserService', () => {
       ],
     },
   };
-  let fhirRequestSpy: jasmine.SpyObj<FhirRequestService>;
 
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      providers: [FhirRequestService],
-      imports: [HttpClientTestingModule],
-    })
-  );
+  const expectedSecurityServices = ['OAuth', 'SMART-on-FHIR', 'Basic'];
+  const expectedAuthorizationURL = mockBaseURL + 'Argonaut/oauth2/authorize';
+  const expectedTokenURL = mockBaseURL + 'Argonaut/oauth2/token';
+  const expectedResources = [
+    'AllergyIntolerance',
+    'Appointment',
+    'Binary',
+    'CarePlan',
+    'Condition',
+    'Conformance',
+    'Device',
+    'DiagnosticReport',
+    'DocumentReference',
+    'FamilyMemberHistory',
+    'Goal',
+    'Immunization',
+    'List',
+    'Location',
+    'Medication',
+    'MedicationOrder',
+    'MedicationStatement',
+    'Observation',
+    'Patient',
+    'Practitioner',
+    'Procedure',
+    'ProcedureRequest',
+    'Schedule',
+    'Slot',
+  ];
+
+  // this will hold our fhir request service spy later
+  // let fhirReqService: jasmine.SpyObj<FhirRequestService>;
+  let service: ConformanceParserService;
+
+  // we'll use this to actually get our FHIR data
+  // let getConfStatementSpy;
+  let fhirRequestSpy;
 
   beforeEach(() => {
+    // here's our spy!
     fhirRequestSpy = jasmine.createSpyObj('FhirRequestService', [
       'getConformanceStatement',
     ]);
 
-    fhirRequestSpy.getConformanceStatement.and.returnValue(of(mockConformanceData));
+    // and how we will return data
+    fhirRequestSpy.getConformanceStatement.and.returnValue(
+      of(mockConformanceData)
+    );
 
-    service = new ConformanceParserService(fhirRequestSpy);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: FhirRequestService, useValue: fhirRequestSpy }],
+    });
+  });
+
+  beforeEach(() => {
+    service = TestBed.get(ConformanceParserService);
   });
 
   it('should be created', () => {
-    // const service: ConformanceParserService = TestBed.get(
-    //   ConformanceParserService
-    // );
     expect(service).toBeTruthy();
+  });
+
+  it('should return the proper data URL', () => {
+    expect(service.getUrl()).toEqual(mockConformanceData.data.url);
+  });
+
+  it('should return the proper FHIR version', () => {
+    expect(service.getFhirVersion()).toEqual(
+      mockConformanceData.data.fhirVersion
+    );
+  });
+
+  it('should return the proper EHR software version information', () => {
+    const versionObject = {
+      name: mockConformanceData.data.software.name,
+      version: mockConformanceData.data.software.version,
+      releaseDate: mockConformanceData.data.software.releaseDate,
+    };
+
+    expect(service.getSoftwareInformation()).toEqual(versionObject);
+  });
+
+  it('should return the proper security services', () => {
+    expect(service.getSecurityServices()).toEqual(expectedSecurityServices);
+  });
+
+  it('should return the proper Authorization URL', () => {
+    expect(service.getAuthorizationURL()).toEqual(expectedAuthorizationURL);
+  });
+
+  it('should return the proper Token URL', () => {
+    expect(service.getTokenURL()).toEqual(expectedTokenURL);
+  });
+
+  it('should return the list of available resources', () => {
+    expect(service.getAvailableResources()).toEqual(expectedResources);
   });
 });

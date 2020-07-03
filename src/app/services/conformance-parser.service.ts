@@ -27,17 +27,17 @@ export class ConformanceParserService {
   // fhirVersion: '1.0.2';
   // acceptUnknown: 'no';
   getUrl() {
-    return this.conformanceStatement.data.url;
+    return this.conformanceStatement.data.data.url;
   }
 
   getFhirVersion() {
-    return this.conformanceStatement.data.fhirVersion;
+    return this.conformanceStatement.data.data.fhirVersion;
   }
 
   getSoftwareInformation() {
-    const name = this.conformanceStatement.data.software.name;
-    const version = this.conformanceStatement.data.software.version;
-    const releaseDate = this.conformanceStatement.data.software.releaseDate;
+    const name = this.conformanceStatement.data.data.software.name;
+    const version = this.conformanceStatement.data.data.software.version;
+    const releaseDate = this.conformanceStatement.data.data.software.releaseDate;
 
     return { name, version, releaseDate };
   }
@@ -45,40 +45,46 @@ export class ConformanceParserService {
   // rest[0].security.service is an array of values
   // loop through array and get coding
   getSecurityServices() {
-    const services = this.conformanceStatement.rest[0].security.service;
+    const services = this.conformanceStatement.data.data.rest[0].security.service;
     const availableServices = [];
 
     services.forEach((element) => {
-      availableServices.push(element.coding.code);
+      availableServices.push(element.coding[0].code);
     });
 
     return availableServices;
   }
 
   getAuthorizationURL() {
-    const extensions = this.conformanceStatement.rest[0].security.extension[0]
+    const extensions = this.conformanceStatement.data.data.rest[0].security.extension[0]
       .extension;
+    let authURL;
 
     extensions.forEach((element) => {
       if (element.url === 'authorize') {
-        return element.valueUri;
+        authURL = element.valueUri;
       }
     });
+
+    return authURL;
   }
 
   getTokenURL() {
-    const extensions = this.conformanceStatement.rest[0].security.extension[0]
+    const extensions = this.conformanceStatement.data.data.rest[0].security.extension[0]
       .extension;
+    let tokenURL;
 
     extensions.forEach((element) => {
       if (element.url === 'token') {
-        return element.valueUri;
+        tokenURL = element.valueUri;
       }
     });
+
+    return tokenURL;
   }
 
   getAvailableResources() {
-    const resources = this.conformanceStatement.rest[0].resource;
+    const resources = this.conformanceStatement.data.data.rest[0].resource;
     const availableResources = [];
 
     resources.forEach(element => {
