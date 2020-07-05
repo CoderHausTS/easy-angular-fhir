@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppConfigService, initializeApp } from './services/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ConformanceComponent } from './conformance/conformance.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ConformanceComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
     AppConfigService,
