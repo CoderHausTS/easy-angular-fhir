@@ -1,20 +1,37 @@
 import { Injectable } from '@angular/core';
-import { FhirRequestService } from './fhir-request.service';
+import { Subscription, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConformanceParserService {
   conformanceStatement;
+  private conformanceStatementChanged = new Subject<any>();
 
-  constructor(private fhirSvc: FhirRequestService) {
-    this.getConformanceStatement();
+  constructor(private http: HttpClient) {
+    this.conformanceStatmentFetch();
   }
 
-  getConformanceStatement() {
-    this.fhirSvc
-      .getConformanceStatement()
-      .subscribe((data) => (this.conformanceStatement = { data }));
+  // hit the conformance statement
+  // conformanceStatementURL = baseUrl + 'metadata'
+  // https://open-ic.epic.com/Argonaut/api/FHIR/Argonaut/metadata
+  // getConformanceStatement() {
+  //   return this.conformanceStatement.asObservable();
+  // }
+
+  conformanceStatmentFetch() {
+    this.http
+      .get(AppConfigService.settings.fhir.baseURL + 'metadata')
+      .subscribe((data) => {
+        this.setConformanceStatement(data);
+      });
+  }
+
+  setConformanceStatement(confStatement) {
+    this.conformanceStatement = confStatement;
+    this.conformanceStatementChanged.next(this.conformanceStatement);
   }
 
   // resourceType: 'Conformance';
@@ -27,25 +44,25 @@ export class ConformanceParserService {
   // fhirVersion: '1.0.2';
   // acceptUnknown: 'no';
   getUrl() {
-    return this.conformanceStatement.data.data.url;
+    return this.conformanceStatement.url;
   }
 
   getFhirVersion() {
-    return this.conformanceStatement.data.data.fhirVersion;
+    return this.conformanceStatement.fhirVersion;
   }
 
   getSoftwareInformation() {
-    const name = this.conformanceStatement.data.data.software.name;
-    const version = this.conformanceStatement.data.data.software.version;
-    const releaseDate = this.conformanceStatement.data.data.software.releaseDate;
+    const name = this.conformanceStatement.software.name;
+    const version = this.conformanceStatement.software.version;
+    const releaseDate = this.conformanceStatement.software.releaseDate;
 
     return { name, version, releaseDate };
   }
 
-  // rest[0].security.service is an array of values
-  // loop through array and get coding
+  // // rest[0].security.service is an array of values
+  // // loop through array and get coding
   getSecurityServices() {
-    const services = this.conformanceStatement.data.data.rest[0].security.service;
+    const services = this.conformanceStatement.rest[0].security.service;
     const availableServices = [];
 
     services.forEach((element) => {
@@ -56,7 +73,7 @@ export class ConformanceParserService {
   }
 
   getAuthorizationURL() {
-    const extensions = this.conformanceStatement.data.data.rest[0].security.extension[0]
+    const extensions = this.conformanceStatement.rest[0].security.extension[0]
       .extension;
     let authURL;
 
@@ -70,7 +87,7 @@ export class ConformanceParserService {
   }
 
   getTokenURL() {
-    const extensions = this.conformanceStatement.data.data.rest[0].security.extension[0]
+    const extensions = this.conformanceStatement.rest[0].security.extension[0]
       .extension;
     let tokenURL;
 
@@ -84,10 +101,10 @@ export class ConformanceParserService {
   }
 
   getAvailableResources() {
-    const resources = this.conformanceStatement.data.data.rest[0].resource;
+    const resources = this.conformanceStatement.rest[0].resource;
     const availableResources = [];
 
-    resources.forEach(element => {
+    resources.forEach((element) => {
       availableResources.push(element.type);
     });
 

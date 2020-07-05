@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FhirRequestService } from '../services/fhir-request.service';
+import { ConformanceParserService } from '../services/conformance-parser.service';
 
 @Component({
   selector: 'app-conformance',
@@ -8,22 +9,28 @@ import { FhirRequestService } from '../services/fhir-request.service';
 })
 export class ConformanceComponent implements OnInit {
   conformanceStatement;
+  dataURL;
+  FHIRVersion;
+  EHRSoftwareVersion;
+  securityServices;
+  authURL;
+  tokenURL;
+  resources;
 
-  constructor(private fhirReq: FhirRequestService) {}
+  // constructor(private conformanceService: ConformanceParserService) {}
+  constructor(private conformanceService: ConformanceParserService) {}
 
-  ngOnInit() {
-    this.showConformanceStatement();
+  ngOnInit() {}
 
-    setTimeout(() => {
-      console.log(this.conformanceStatement);
-    }, 3000);
+  getConformanceURL() {
+    this.dataURL = this.conformanceService.getUrl();
   }
 
-  showConformanceStatement() {
-    this.fhirReq.getConformanceStatement()
-    .subscribe(
-      (data) =>
-        (this.conformanceStatement = { data })
-    );
+  getFhirVersion() {
+    this.FHIRVersion = this.conformanceService.getFhirVersion();
+  }
+
+  getFhirResources() {
+    this.resources = this.conformanceService.getAvailableResources();
   }
 }

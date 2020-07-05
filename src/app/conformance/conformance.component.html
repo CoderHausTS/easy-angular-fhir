@@ -1,11 +1,22 @@
-<h3>Software section</h3>
-<pre>{{ this.conformanceStatement?.data.software | json }}</pre>
-
-<h3>Security section</h3>
-<pre>{{ this.conformanceStatement?.data.rest[0].security | json }}</pre>
-
-<h3>Resource section</h3>
-<pre>{{ this.conformanceStatement?.data.rest[0].resource | json }}</pre>
-
-<h3>Full conformance</h3>
-<pre>{{ this.conformanceStatement | json}}</pre>
+<div>
+  <label for="confURL">Conformance URL</label>
+  <button id="confURL" (click)="getConformanceURL()">Fetch</button>
+  <span *ngIf="!dataURL">No URL Found</span>
+  <span *ngIf="dataURL">{{ dataURL }}</span>
+</div>
+<div>
+  <label for="fhirVersion">FHIR Version</label>
+  <button id="fhirVersion" (click)="getFhirVersion()">Fetch</button>
+  <span *ngIf="!FHIRVersion">No version Found</span>
+  <span *ngIf="FHIRVersion">{{ FHIRVersion }}</span>
+</div>
+<div>
+  <label for="fhirResources">Available Resources</label>
+  <button id="fhirResources" (click)="getFhirResources()">Fetch</button>
+  <span *ngIf="!resources">No resources Found</span>
+  <span *ngIf="resources">
+    <div *ngFor="let item of resources">
+      <span> {{ item }}</span>
+    </div>
+  </span>
+</div>

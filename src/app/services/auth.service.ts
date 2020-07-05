@@ -19,7 +19,7 @@ export class AuthService {
   ) {
     // get conformance statement from fhir-request service
 
-    const conformanceStatement = fhirReq.getConformanceStatement();
+    // const conformanceStatement = fhirReq.getConformanceStatementUpdateListener();
   }
 
   // get service/OAuth node
