@@ -73,6 +73,7 @@ export class ConformanceParserService {
   }
 
   getAuthorizationURL() {
+    // console.log('rest is ', this.conformanceStatement.rest[0]);
     const extensions = this.conformanceStatement.rest[0].security.extension[0]
       .extension;
     let authURL;
