@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ConformanceParserService } from './conformance-parser.service';
 import { AppConfigService } from './app-config.service';
+import { Router, UrlSerializer } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,27 +16,31 @@ export class AuthService {
     private http: HttpClient,
     private conformanceService: ConformanceParserService,
     private appConfigService: AppConfigService
-  ) {
-    this.authorizationURL = this.conformanceService.getAuthorizationURL();
-    console.log('authURL is ', this.authorizationURL);
-  }
+  ) {}
+
+  // public redirect(url: string, target = '_blank'): Promise<boolean> {
+  //   return new Promise<boolean>((resolve, reject) => {
+  //     try {
+  //       resolve(!!window.open(url, target));
+  //     } catch (e) {
+  //       reject(e);
+  //     }
+  //   });
+  // }
 
   fetchAuthorizationCode() {
     const responseType = 'code';
-    const clientID = AppConfigService.settings.fhir.clientId;
-    const redirectURI = AppConfigService.settings.fhir.redirectUrl;
+    const clientId = AppConfigService.settings.fhir.clientId;
+    const redirectUri = AppConfigService.settings.fhir.redirectUrl;
+
+    this.authorizationURL = this.conformanceService.getAuthorizationURL();
 
     const params = new HttpParams({
-      fromString: `response_type=${responseType}&client_id=${clientID}&redirect_uri=${redirectURI}`,
+      fromString: `response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}`,
     });
 
-    console.log('going in! ');
-    console.log('params ', params);
-    this.http.get('https://www.google.com').subscribe(data => {console.log('the datum ', data); } );
-    // this.http
-    //   .get(this.authorizationURL, { params })
-    //   .subscribe((authCode) => {(this.authorizeCode = authCode); console.log('in http ', authCode); });
-
+    // this.redirect(this.authorizationURL + '?' + params.toString());
+    window.location.href = this.authorizationURL + '?' + params.toString();
   }
 
   // we then get back the auth code
