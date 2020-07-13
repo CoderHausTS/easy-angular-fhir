@@ -9,8 +9,8 @@ const routes: Routes = [
     component: ConformanceComponent,
   },
   {
-    path: 'auth',
-    component: AuthComponent,
+    path: '',
+    component: AuthComponent, pathMatch: 'full'
   },
 ];
 

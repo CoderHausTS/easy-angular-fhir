@@ -4,11 +4,14 @@ import { AuthComponent } from './auth.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConformanceParserService } from '../services/conformance-parser.service';
 import { AppConfigService } from '../services/app-config.service';
+import { ActivatedRouteStub } from '../testing/activated-route.stub';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AuthComponent', () => {
   let component: AuthComponent;
   let fixture: ComponentFixture<AuthComponent>;
   let conformanceSpy: jasmine.SpyObj<ConformanceParserService>;
+  let activateRouteStub: ActivatedRouteStub;
 
   const clientID = 'fake-client-id';
   const redirectURI = 'http://mock.redirect.uri:8000';
@@ -29,6 +32,8 @@ describe('AuthComponent', () => {
   const mockURL = MockAppConstants.settings.fhir.baseURL + 'zippity/doo/dah';
 
   beforeEach(async(() => {
+    activateRouteStub = new ActivatedRouteStub({code: 'mockcode'});
+
     conformanceSpy = jasmine.createSpyObj('ConformanceParserService', [
       'getAuthorizationURL',
       'getTokenURL',
@@ -45,6 +50,7 @@ describe('AuthComponent', () => {
           provide: ConformanceParserService,
           useValue: conformanceSpy,
         },
+        { provide: ActivatedRoute, useValue: ActivatedRouteStub },
       ],
     }).compileComponents();
   }));

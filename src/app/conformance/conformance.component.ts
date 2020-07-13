@@ -33,4 +33,8 @@ export class ConformanceComponent implements OnInit {
   getFhirResources() {
     this.resources = this.conformanceService.getAvailableResources();
   }
+
+  getTokenUrl() {
+    this.tokenURL = this.conformanceService.getTokenURL();
+  }
 }
