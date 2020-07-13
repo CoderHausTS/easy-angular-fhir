@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
 
@@ -73,6 +73,7 @@ export class ConformanceParserService {
   }
 
   getAuthorizationURL() {
+    // console.log('rest is ', this.conformanceStatement);
     const extensions = this.conformanceStatement.rest[0].security.extension[0]
       .extension;
     let authURL;

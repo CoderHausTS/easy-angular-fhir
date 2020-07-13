@@ -6,9 +6,10 @@ import { AppComponent } from './app.component';
 import { AppConfigService, initializeApp } from './services/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ConformanceComponent } from './conformance/conformance.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
-  declarations: [AppComponent, ConformanceComponent],
+  declarations: [AppComponent, ConformanceComponent, AuthComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
     AppConfigService,

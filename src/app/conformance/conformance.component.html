@@ -11,6 +11,14 @@
   <span *ngIf="FHIRVersion">{{ FHIRVersion }}</span>
 </div>
 <div>
+  <label for="tokenURL">Token URL</label>
+  <button id="tokenURL" (click)="getTokenUrl()">Fetch</button>
+  <span *ngIf="!tokenURL">No token url Found</span>
+  <span *ngIf="tokenURL">
+      <span> {{ tokenURL }}</span>
+  </span>
+</div>
+<div>
   <label for="fhirResources">Available Resources</label>
   <button id="fhirResources" (click)="getFhirResources()">Fetch</button>
   <span *ngIf="!resources">No resources Found</span>
