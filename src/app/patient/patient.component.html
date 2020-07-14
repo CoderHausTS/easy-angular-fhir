@@ -1,1 +1,9 @@
-<p>patient works!</p>
+<h2>Patient: {{this.patient}}</h2>
+<h3>Access Token: {{this.token}}</h3>
+
+<button (click)='getPatientData()'>Get patient meds</button>
+<!-- <pre>{{patientData | json}}</pre> -->
+<div *ngFor="let entry of patientData?.entry">
+  <span>Provider: {{entry.resource.informationSource.display}}</span>
+  <span>Medication: {{entry.resource.medicationCodeableConcept.text}}</span>
+</div>
