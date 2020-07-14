@@ -7,9 +7,10 @@ import { AppConfigService, initializeApp } from './services/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ConformanceComponent } from './conformance/conformance.component';
 import { AuthComponent } from './auth/auth.component';
+import { PatientComponent } from './patient/patient.component';
 
 @NgModule({
-  declarations: [AppComponent, ConformanceComponent, AuthComponent],
+  declarations: [AppComponent, ConformanceComponent, AuthComponent, PatientComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
     AppConfigService,

@@ -9,8 +9,9 @@ import { ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent implements OnInit {
-  codeParam;
-  authToken;
+  codeParam = '';
+  authToken = '';
+  patient = '';
 
   constructor(
     private authService: AuthService,
@@ -24,24 +25,23 @@ export class AuthComponent implements OnInit {
 
     if (this.codeParam) {
       this.authService.setAuthorizationCode(this.codeParam);
-      window.history.replaceState({}, document.title, '/');
+      // window.history.replaceState({}, document.title, '/');
       setTimeout(() => {
       this.authService.fetchAuthorizationToken();
 
       }, 4000);
     }
-    // this.codeParam = "";
   }
 
   getAuthCode() {
     this.authService.fetchAuthorizationCode();
   }
 
-  getAuthToken() {
-    this.authService.fetchAuthorizationToken();
+  getToken() {
+    this.authToken = this.authService.getToken();
   }
 
-  getToken() {
-    this.authService.getToken();
+  getPatient() {
+    this.patient = this.authService.getPatient();
   }
 }
