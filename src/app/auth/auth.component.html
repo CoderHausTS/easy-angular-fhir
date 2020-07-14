@@ -18,3 +18,10 @@
   <div *ngIf="codeParam">Patient OID is: {{ patient }}</div>
   <div *ngIf="!codeParam">No auth token found</div>
 </div>
+
+<!-- After you get auth code, and that query returns, click getPatient
+then this link will become active -->
+<div>
+  <a *ngIf="patient" [routerLink]="['patient', {oid: patient, token: authToken}]"
+  routerLinkActive="router-link-active">Get patient data</a>
+</div>

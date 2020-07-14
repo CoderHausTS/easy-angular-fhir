@@ -25,11 +25,13 @@ export class AuthComponent implements OnInit {
 
     if (this.codeParam) {
       this.authService.setAuthorizationCode(this.codeParam);
-      // window.history.replaceState({}, document.title, '/');
+      window.history.replaceState({}, document.title, '/');
       setTimeout(() => {
-      this.authService.fetchAuthorizationToken();
+        this.authService.fetchAuthorizationToken();
+      }, 2000);
 
-      }, 4000);
+      this.getToken();
+      this.getPatient();
     }
   }
 
