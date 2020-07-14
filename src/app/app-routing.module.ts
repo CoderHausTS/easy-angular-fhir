@@ -10,8 +10,9 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: AuthComponent, pathMatch: 'full'
-  },
+    component: AuthComponent,
+    pathMatch: 'full',
+  }
 ];
 
 @NgModule({

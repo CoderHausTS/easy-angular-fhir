@@ -1,5 +1,5 @@
 <div>
-  <label for="authCode">Authorization Code</label>
+  <label for="authCode">Auth and get token</label>
   <button id="authCode" (click)="getAuthCode()">Fetch</button>
 </div>
 <div *ngIf="codeParam">Auth code is: {{ codeParam }}</div>
@@ -7,12 +7,14 @@
 
 <div>
   <label for="authToken">Authorization Token</label>
-  <button id="authToken" (click)="getAuthToken()">Fetch</button>
+  <button id="authToken" (click)="getToken()">Show Token</button>
 </div>
 <div *ngIf="codeParam">Auth token is: {{ authToken }}</div>
-<div *ngIf="!codeParam">No auth code found</div>
+<div *ngIf="!codeParam">No auth token found</div>
 
 <div>
-  <label for="getToken">Get Token</label>
-  <button id="getToken" (click)="getToken()">Fetch</button>
+  <label for="getPatient">Get Patient</label>
+  <button id="getPatient" (click)="getPatient()">Show Patient OID</button>
+  <div *ngIf="codeParam">Patient OID is: {{ patient }}</div>
+  <div *ngIf="!codeParam">No auth token found</div>
 </div>
